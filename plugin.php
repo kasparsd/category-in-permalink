@@ -3,13 +3,14 @@
 	Plugin Name: Category in Permalink
 	Description: Overwrite the default category that gets included in the post permalink.
 	Tags: category, categories, posts, admin, seo
-	Plugin URI: 
+	Plugin URI: https://github.com/kasparsd/category-in-permalink
+	GitHub URI: https://github.com/kasparsd/category-in-permalink
 	Author: Kaspars Dambis
 	Author URI: http://kaspars.net
 	Version: 0.1
 	Tested up to: 4.0
 	License: GPL2
-	Textdomain: category-in-permalink
+	Text Domain: category-in-permalink
 */
 
 
