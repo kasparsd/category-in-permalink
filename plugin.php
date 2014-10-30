@@ -7,7 +7,7 @@
 	GitHub URI: https://github.com/kasparsd/category-in-permalink
 	Author: Kaspars Dambis
 	Author URI: http://kaspars.net
-	Version: 0.1
+	Version: 0.1.1
 	Tested up to: 4.0
 	License: GPL2
 	Text Domain: category-in-permalink
@@ -18,6 +18,8 @@ CategoryInPermalink::instance();
 
 
 class CategoryInPermalink {
+
+	private $cache = array();
 
 	
 	public static function instance() {
@@ -138,16 +140,26 @@ class CategoryInPermalink {
 		if ( sizeof( $cats ) < 2 )
 			return $cat;
 
-		$cat_ids = array();
+		// Get it from cache maybe
+		if ( isset( $this->cache[ $post->ID ] ) )
+			return $this->cache[ $post->ID ];
 
-		foreach ( $cats as $cat )
-			$cat_ids[] = $cat->term_id;
+		$terms = array();
+
+		foreach ( $cats as $cat_item )
+			$terms[ $cat_item->term_id ] = $cat_item;
 
 		$primary_cat = get_post_meta( $post->ID, 'category_in_permalink', true );
 
 		// Make sure that it is one of the categories assigned to the post
-		if ( ! empty( $primary_cat ) && in_array( $primary_cat, $cat_ids ) )
-			return $primary_cat;
+		if ( ! empty( $primary_cat ) && isset( $terms[ $primary_cat ] ) ) {
+			
+			// Store this in our object cache
+			$this->cache[ $post->ID ] = $terms[ $primary_cat ];
+
+			return $terms[ $primary_cat ];
+
+		}
 
 		return $cat;
 
